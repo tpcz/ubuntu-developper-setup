@@ -116,9 +116,15 @@ if ! shopt -oq posix; then
   fi
 fi
 
-export PATH=$PATH:/usr/share/toolchains/xtensa-esp32-elf/bin
 export PATH=$PATH:~/bin
 
+#ESP 32 development
+export PATH=$PATH:/usr/share/toolchains/xtensa-esp32-elf/bin
+
+
+#Android development
+export PATH=$PATH:~/Android/Sdk/platform-tools
 
 #PS1="\[\033[35m\]\t\[\033[m\]-\[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]\$ "
 
+PAHT=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/tom/bin:/usr/share/toolchains/xtensa-esp32-elf/bin:/home/tom/Android/Sdk/platform-tools://home/tom/Android/Sdk/platform-tools
