@@ -127,4 +127,17 @@ export PATH=$PATH:~/Android/Sdk/platform-tools
 
 #PS1="\[\033[35m\]\t\[\033[m\]-\[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]\$ "
 
+
+function color_my_prompt {
+    local __user_and_host="\[\033[01;32m\]\u@\h"
+    local __cur_location="\[\033[01;34m\]\w"
+    local __git_branch_color="\[\033[31m\]"
+    local __git_branch='`git branch 2> /dev/null | grep -e ^* | sed -E  s/^\\\\\*\ \(.+\)$/\\\\\1\/`'
+    local __prompt_tail="\[\033[35m\]$"
+    local __git_dirty='`git rev-parse 2>/dev/null && (git diff --no-ext-diff --quiet --exit-code 2> /dev/null || echo -e \*)`'
+    local __last_color="\[\033[00m\]"
+    export PS1="$__user_and_host $__cur_location $__git_branch_color($__git_branch$__git_dirty)$__prompt_tail$__last_color "
+}
+color_my_prompt
+
 PAHT=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/tom/bin:/usr/share/toolchains/xtensa-esp32-elf/bin:/home/tom/Android/Sdk/platform-tools://home/tom/Android/Sdk/platform-tools
