@@ -43,7 +43,7 @@ esac
 # uncomment for a colored prompt, if the terminal has the capability; turned
 # off by default to not distract the user: the focus in a terminal window
 # should be on the output of commands, not on the prompt
-force_color_prompt=yes
+#force_color_prompt=yes
 
 if [ -n "$force_color_prompt" ]; then
     if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
@@ -57,7 +57,7 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]$(__git_ps1)\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
@@ -85,7 +85,21 @@ if [ -x /usr/bin/dircolors ]; then
 fi
 
 # colored GCC warnings and errors
-#export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+
+
+function color_my_prompt {
+    local __user_and_host="\[\033[01;32m\]\u@\h"
+    local __cur_location="\[\033[01;34m\]\w"
+    local __git_branch_color="\[\033[31m\]"
+    local __git_branch='`git branch 2> /dev/null | grep -e ^* | sed -E  s/^\\\\\*\ \(.+\)$/\(\\\\\1\/`'
+    local __git_dirty='`git rev-parse 2>/dev/null && ( (git diff --no-ext-diff --quiet --exit-code 2> /dev/null && (echo ")")) || echo -e \*\))`'
+    local __prompt_tail="\[\033[35m\]$"
+    local __last_color="\[\033[00m\]"
+    export PS1="$__user_and_host $__cur_location $__git_branch_color$__git_branch$__git_dirty$__prompt_tail$__last_color "
+}
+color_my_prompt
+
 
 # some more ls aliases
 alias ll='ls -alF'
@@ -116,28 +130,15 @@ if ! shopt -oq posix; then
   fi
 fi
 
-export PATH=$PATH:~/bin
-
-#ESP 32 development
-export PATH=$PATH:/usr/share/toolchains/xtensa-esp32-elf/bin
-
-
-#Android development
-export PATH=$PATH:~/Android/Sdk/platform-tools
-
-#PS1="\[\033[35m\]\t\[\033[m\]-\[\033[36m\]\u\[\033[m\]@\[\033[32m\]\h:\[\033[33;1m\]\w\[\033[m\]\$ "
+# ESP32 development
+export PATH="$PATH:/usr/share/toolchain/xtensa-esp32-elf/bin"
+export IDF_PATH="/home/tom/workspaces/esp32/esp-idf"
 
 
-function color_my_prompt {
-    local __user_and_host="\[\033[01;32m\]\u@\h"
-    local __cur_location="\[\033[01;34m\]\w"
-    local __git_branch_color="\[\033[31m\]"
-    local __git_branch='`git branch 2> /dev/null | grep -e ^* | sed -E  s/^\\\\\*\ \(.+\)$/\\\\\1\/`'
-    local __prompt_tail="\[\033[35m\]$"
-    local __git_dirty='`git rev-parse 2>/dev/null && (git diff --no-ext-diff --quiet --exit-code 2> /dev/null || echo -e \*)`'
-    local __last_color="\[\033[00m\]"
-    export PS1="$__user_and_host $__cur_location $__git_branch_color($__git_branch$__git_dirty)$__prompt_tail$__last_color "
-}
-color_my_prompt
+# Plant UML development
+# sudo apt-get install graphwiz
+export GRAPHVIZ_DOT=/usr/bin/dot
 
-PAHT=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/tom/bin:/usr/share/toolchains/xtensa-esp32-elf/bin:/home/tom/Android/Sdk/platform-tools://home/tom/Android/Sdk/platform-tools
+
+
+
